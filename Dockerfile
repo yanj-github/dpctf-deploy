@@ -15,6 +15,7 @@ RUN rm /bin/sh &&\
     ln -s /bin/bash /bin/sh
 USER ubuntu
 
+RUN mkdir tests
 RUN mkdir DPCTF && cd DPCTF
 WORKDIR DPCTF
 RUN git init &&\
@@ -38,4 +39,4 @@ RUN ./import-tests.sh
 
 EXPOSE 8000
 
-CMD ./check-ownership.sh && ./wpt serve-wave --report
+CMD ln -s ../tests/* . || ./check-ownership.sh && ./wpt serve-wave --report
