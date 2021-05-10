@@ -26,6 +26,14 @@ def main():
 
     for vector_name in json_file:
         vector = json_file[vector_name]
+
+        relative_path = vector["mpdPath"]
+        relative_path = os.path.dirname(relative_path)
+        absolute_path = os.path.join(DEST_DIR, relative_path)
+        if os.path.exists(absolute_path):
+            print("Path '" + absolute_path  + "' exists. Skipping ...");
+            continue;
+
         if "zipPath" not in vector:
             print("Vector '" + vector_name + "' does not specify zip path, skipping ...")
             continue
