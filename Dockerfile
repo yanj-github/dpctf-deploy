@@ -33,9 +33,12 @@ ARG runner-rev
 RUN git fetch origin $commit
 RUN git reset --hard FETCH_HEAD
 
-ARG tests-rev
+COPY remove-tests.sh .
+RUN ./remove-tests.sh
 
-RUN ./import-tests.sh
+#ARG tests-rev
+
+#RUN ./import-tests.sh
 
 EXPOSE 8000
 
