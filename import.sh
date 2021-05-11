@@ -7,5 +7,7 @@ echo ""
 echo "Importing DPCTF tests ..."
 git clone https://github.com/cta-wave/dpctf-tests dpctf
 mv dpctf/generated/* tests
-mv dpctf/test-config.json .
+if [ ! -f tests/test-config.json ]; then
+  mv dpctf/test-config.json tests
+fi
 rm -rf dpctf

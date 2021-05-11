@@ -21,8 +21,6 @@ WORKDIR DPCTF
 RUN git init &&\
     git remote add origin https://github.com/cta-wave/dpctf-test-runner.git
 
-COPY check-ownership.sh .
-
 USER root
 RUN npm install --global https://github.com/cta-wave/wptreport.git#main
 USER ubuntu
@@ -36,10 +34,14 @@ RUN git reset --hard FETCH_HEAD
 COPY remove-tests.sh .
 RUN ./remove-tests.sh
 
+COPY check-ownership.sh .
+COPY check-tests.sh .
+COPY check-content.sh .
+
 #ARG tests-rev
 
 #RUN ./import-tests.sh
 
 EXPOSE 8000
 
-CMD ln -s ../tests/* . || ./check-ownership.sh /home/ubuntu/DPCTF/results && ./wpt serve-wave --report
+CMD ln -s ../tests/* . || ./check-ownership.sh /home/ubuntu/DPCTF/results && ./check-tests.sh /home/ubuntu/tests && ./check-content.sh /home/ubuntu/DPCTF/content && ./wpt serve-wave --report
