@@ -42,4 +42,4 @@ RUN ./remove-tests.sh
 
 EXPOSE 8000
 
-CMD ln -s ../tests/* . || ./check-ownership.sh && ./wpt serve-wave --report
+CMD ln -s ../tests/* . || ./check-ownership.sh /home/ubuntu/DPCTF/results && ./wpt serve-wave --report

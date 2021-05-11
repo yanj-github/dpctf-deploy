@@ -16,23 +16,20 @@ it in a container with proper configuration.
 To build the image, simply run
 
 ```shell
-./build.sh <commit-id/branch/tag> <image-version> [<tests-revision> [<runner-revision>]]
+./build.sh <commit-id/branch/tag> <image-version> [<options>]
 ```
 
 In this command **commit-id/branch/tag** specifies what code base to use 
 from the [DPCTF Test Runner repository](https://github.com/cta-wave/dpctf-test-runner) in the created 
-image. As indicated, this can be a commit id, a branch name or a tag. 
+image. As indicated, this can be a commit id, a branch name or a tag.
+
 **image-version** specifies the version string the created docker image is 
 tagged with. This allows to have multiple image with different versions.
-The build script will name the image `dpctf:<image-version>`.  
-**tests-revision** is an optional parameter used to circumvent caching of used 
-dpctf-tests when building the image. The provided value has no semantics, 
-therefore, when rebuilding the image for different dpctf-tests it is 
-sufficient to provide some value that differs from previous builds.  
-**runner-revision** is an optional parameter used similarly to the 
-tests-revision parameter, but in regards to the used dpctf runner version. 
-This is especially useful when using branch names, which keep their names 
-while the underlying code may change.
+The build script will name the image `dpctf:<image-version>`.
+
+**options** - A list of optional arguments:
+- **--reload-runner**: Reload the test runner, disabling cache
+- **--reload-tests**: Reload test files, disabling cache
 
 For example:
 
@@ -41,17 +38,17 @@ For example:
 ```
 
 To rebuild the image using the cache but retrigger the download of the tests, 
-use the tests revision parameter:
+use the reload-tests argument:
 
 ```shell
-./build.sh master latest 1
+./build.sh master latest --reload-tests
 ```
 
 To rebuild the image using the cache but retrigger the download of the test 
-runner, use the runner revision parameter:
+runner, use the reload-runner argument:
 
 ```shell
-./build.sh master latest 1 1
+./build.sh master latest --reload-runner
 ```
 
 This will create a docker image for the latest code base on the master branch 
@@ -84,11 +81,19 @@ Every directory mapped into the container has to have its owner set to user id
 To then start the container run the following command:
 
 ```shell
-docker-compose up -d
+docker-compose up
 ```
 
 This will use the configuration in the `docker-compose.yml` to create a new
-container and run it in the background.
+container and run it.
+
+Once the docker container is repeatedly running correctly, it may be run as a daemon using the `-d` flag:
+
+```shell
+docker-compose up -d
+```
+
+For more details on controlling the container when running it in the background, see the corresponding [section](#controlling-the-running-container).
 
 The test runner can be configured using the `config.json`. For more details 
 see the [docs](https://github.com/cta-wave/dpctf-test-runner/blob/master/tools/wave/docs/config.md).
