@@ -38,6 +38,7 @@ COPY check-host.sh .
 
 ARG tests-rev
 
+COPY import-tests.sh .
 RUN ./import-tests.sh
 
 EXPOSE 8000
