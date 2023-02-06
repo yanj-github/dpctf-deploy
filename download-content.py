@@ -94,10 +94,17 @@ def load_json(json_path):
 def load_zip(path):
     content = None
     print("Fetching zip {}".format(path))
-    try:
-        content = urllib.request.urlopen(path).read()
-    except urllib.error.HTTPError:
-        print("Could not load http url:", path)
+    count = 5
+    while count > 0:
+        try:
+            content = urllib.request.urlopen(path).read()
+            break
+        except urllib.error.HTTPError:
+            print("Could not load http url:", path)
+            break
+        except urllib.error.URLError:
+            print("URL Error. Retrying ...")
+            count -= 1
     return content
 
 
