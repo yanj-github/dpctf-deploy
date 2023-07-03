@@ -1,5 +1,5 @@
 {
-  "browser_host": "web-platform.test",
+  "browser_host": "hbbtv1.test",
   "wave": {
     "aliases": [],
     "results": "./results",

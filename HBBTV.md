@@ -37,7 +37,7 @@ $ git checkout hbbtv
 To build the image, change into the repository's directory and run:
 
 ```sh
-$ sudo ./build.sh master latest --tests-branch hbbtv-tests
+$ ./build.sh master latest --tests-branch hbbtv-tests
 ```
 
 Download test content:
@@ -66,12 +66,29 @@ to have your domain configured, like
 
 Next, copy the domain's certificate into the `certs` directory.
 
+Now, create volume once and copy data anytime it changes to volume to make it accessible by container.
+
+One time action:
+```bash
+docker volume create --driver local dpctf_external
+```
+
+On change on config or test case content
+```bash
+docker run -d --rm --name dummy -v dpctf_external:/root alpine tail -f /dev/null
+docker cp config.json dummy:/root/config.json
+docker cp content dummy:/root/content
+docker cp certs dummy:/root/certs
+docker rm -f dummy
+```
+
+
 ### 4. Start the test runner
 
 To start the test runner, change into the deploy repostory's clone directory and run:
 
 ```sh
-$ sudo docker-compose up
+$ docker-compose up
 ```
 
 ### 5. Executing tests on the TV
